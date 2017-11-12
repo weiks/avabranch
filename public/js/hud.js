@@ -42,7 +42,7 @@ function HUD(game, pre) {
 			ctx.fillText("Avabranch", x, y)
 			var best = localStorage.bestScore || this.score
 			ctx.fillText("Best: " + best, x, y + 60)
-			ctx.fillText("[Enter] to start game", x, y + 120)
+			ctx.fillText("[Enter] to play with 100 Quarters", x, y + 120)
 			ctx.fillText("[Space] to branch", x, y + 180)
 			ctx.fillText("[p] to pause", x, y + 240)
 		} else if (this.gameOver) {
@@ -66,7 +66,7 @@ function HUD(game, pre) {
 
 			ctx.fillText("Score: " + this.score, x, y + 60)
 			ctx.fillText("Best: " + best, x, y + 120)
-			ctx.fillText("[Enter] for new game", x, y + 180)
+			ctx.fillText("[Enter] to play with 100 Quarters", x, y + 180)
 		} else if (this.game.paused) {
 			var b = {
 				w : 400,
@@ -144,8 +144,26 @@ function HUD(game, pre) {
 		ctx.fill();
 
 	}
+// Widget callbacks
+var receiveMessage = function(event) {
+  if (event.origin !== 'https://dev.pocketfulofquarters.com') {
+    return
+  }
+
+  var data = JSON.parse(event.data)
+  if (data.error) {
+    // data.message
+  } else if (data.cancel) {
+    // user canceled transfer
+  } else {
+    	console.log(data.txId, data.requestId);
+	startGame();
+  }
+}
+// receive message
+window.addEventListener('message', receiveMessage, false)
 	keyListeners.push(['enter', function() {
-		startGame()
+		document.querySelectorAll('.buy-quarters-button').click();
 	}.bind(this)])
 	this.suspend = function() {
 		if (document.webkitHidden && !this.game.paused && this.game.play) {
