@@ -7,6 +7,7 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "layer": "^0.1.0"
   }
 }
